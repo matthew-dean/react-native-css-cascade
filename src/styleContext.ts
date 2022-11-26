@@ -6,7 +6,16 @@ import { createContext, useContext } from 'react'
 import { StyleSheet } from 'react-native'
 import type { StyleProp, TextStyle } from 'react-native'
 
+/**
+ * This should be the intersection of CSS properties defined
+ * as inherited and React Native text styles that are
+ * defined on the `TextStyle` type.
+ *
+ * @see https://www.sitepoint.com/css-inheritance-introduction/
+ */
 export const inheritedStyles = [
+  'color',
+  'direction',
   'fontFamily',
   'fontSize',
   'fontStyle',
@@ -14,25 +23,32 @@ export const inheritedStyles = [
   'fontWeight',
   'letterSpacing',
   'lineHeight',
-  'color',
-  'textAlign'
+  'textAlign',
+  'textDecorationColor',
+  'textShadowColor',
+  'textShadowOffset',
+  'textShadowRadius',
+  'textTransform'
 ] as const satisfies Readonly<Array<keyof TextStyle>>
 
 interface HasColor {
   color: string
 }
 
-type Spread<Type> = { [Key in keyof Type]: Type[Key] }
-
 type ContextStyle = {
   [K in typeof inheritedStyles[number]]?: TextStyle[K]
 } & HasColor
 
-type AllStyles = Spread<TextStyle & HasColor>
+type AllStyles = TextStyle & HasColor
 
-export const StyleContext = createContext<ContextStyle>({
+/**
+ * For now, the only root style / property guaranteed is the `color` prop
+ */
+const rootStyles = {
   color: 'black'
-})
+}
+
+export const StyleContext = createContext<ContextStyle>(rootStyles)
 
 type StyleEntry = [keyof TextStyle, TextStyle[keyof TextStyle]]
 type ContextEntry = [keyof ContextStyle, ContextStyle[keyof ContextStyle]]

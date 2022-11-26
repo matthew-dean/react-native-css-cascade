@@ -53,42 +53,51 @@ export const StyleContext = createContext<ContextStyle>(rootStyles)
 type StyleEntry = [keyof TextStyle, TextStyle[keyof TextStyle]]
 type ContextEntry = [keyof ContextStyle, ContextStyle[keyof ContextStyle]]
 
-export const useStyles = (style?: StyleProp<TextStyle>): [AllStyles, ContextStyle | undefined] => {
-const inherited = useContext(StyleContext)
+export const useStyles = (
+  style?: StyleProp<TextStyle>
+): [AllStyles, ContextStyle | undefined] => {
+  const inherited = useContext(StyleContext)
   if (!style) {
     return [inherited, undefined]
   }
-  let newContext: ContextEntry[] | undefined = undefined
+  let newContext: ContextEntry[] | undefined
 
-  const newStyles = Object.entries(StyleSheet.flatten(style))
-    .filter(([_, value]) => value !== undefined) as StyleEntry[]
+  const newStyles = Object.entries(StyleSheet.flatten(style)).filter(
+    ([_, value]) => value !== undefined
+  ) as StyleEntry[]
 
-  const hasInheritedStyles = newStyles.find(([key]) => inheritedStyles.includes(key as keyof ContextStyle))
+  const hasInheritedStyles = newStyles.find(([key]) =>
+    inheritedStyles.includes(key as keyof ContextStyle)
+  )
   if (hasInheritedStyles) {
     newContext = []
   }
-  const finalStyleEntries = newStyles.concat(Object.entries(inherited) as StyleEntry[])
+  const finalStyleEntries = newStyles.concat(
+    Object.entries(inherited) as StyleEntry[]
+  )
 
   let finalStyle = Object.fromEntries(finalStyleEntries) as unknown as AllStyles
 
   finalStyle = Object.fromEntries(
-    finalStyleEntries.map(
-      ([key, value]) => {
-        let finalValue: [keyof AllStyles, AllStyles[keyof AllStyles]]
-        if (typeof value === 'string') {
-          value = value.replace(/currentColor/g, finalStyle.color)
-        }
-        finalValue = [key as keyof AllStyles, value]
-        if (hasInheritedStyles && inheritedStyles.includes(key as keyof ContextStyle)) {
-          newContext!.push(finalValue as ContextEntry)
-        }
-        return finalValue
+    finalStyleEntries.map(([key, value]) => {
+      if (typeof value === 'string') {
+        value = value.replace(/currentColor/g, finalStyle.color)
       }
-    )
-  )as unknown as AllStyles
+      const finalValue = [key as keyof AllStyles, value]
+      if (
+        hasInheritedStyles &&
+        inheritedStyles.includes(key as keyof ContextStyle)
+      ) {
+        newContext!.push(finalValue as ContextEntry)
+      }
+      return finalValue
+    })
+  ) as unknown as AllStyles
 
   return [
     finalStyle,
-    hasInheritedStyles ? Object.fromEntries(newContext!) as unknown as ContextStyle : undefined
+    hasInheritedStyles
+      ? (Object.fromEntries(newContext!) as unknown as ContextStyle)
+      : undefined
   ]
 }

@@ -1,9 +1,11 @@
 module.exports = {
   preset: '@rnx-kit/jest-preset',
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/setup-tests.js'],
+  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
+  globals: {
+    __DEV__: true
+  },
   transformIgnorePatterns: [
-    'node_modules/(.pnpm)?/(?!react-native|@react-native)'
+    'jest-runner'
   ],
   testMatch: ['<rootDir>/src/__tests__/*.[jt]s?(x)']
 }

@@ -18,7 +18,7 @@
     "test:types": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "release": "pnpm build && np"
+    "release": "pnpm build && np --no-cleanup"
   },
   "peerDependencies": {
     "react": ">=17.0.0",

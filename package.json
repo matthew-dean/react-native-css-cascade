@@ -1,6 +1,6 @@
 {
   "name": "react-native-css-cascade",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Finally, inheritable styles in React Native",
   "author": "matthew-dean",
   "license": "MIT",

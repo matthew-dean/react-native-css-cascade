@@ -3,15 +3,15 @@ import type { TextStyle, StyleProp } from 'react-native'
 
 import { StyleContext, useStyles } from './styleContext'
 
-export type ViewStyleComponent = {
+export type ExpandStyle<T> = Omit<T, 'style'> & {
   style?: StyleProp<TextStyle>
 }
 
 type GetParameters<T> =
   T extends React.ComponentClass<any>
-    ? ConstructorParameters<T>
+    ? ExpandStyle<ConstructorParameters<T>[0]>
     : T extends React.ForwardRefExoticComponent<any>
-      ? Parameters<T>
+      ? ExpandStyle<Parameters<T>[0]>
       : never
 
 export const wrapContext = <
@@ -22,7 +22,7 @@ export const wrapContext = <
   if (!Component) {
     return undefined
   }
-  return ({ style, ...props }: GetParameters<T>[0]) => {
+  return ({ style, ...props }: GetParameters<T>) => {
     const [finalStyle, newContext] = useStyles(style)
     // @ts-ignore - not sure how to properly type this
     const JSX = <Component style={finalStyle} {...props} />

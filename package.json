@@ -12,12 +12,16 @@
   "engines": {
     "node": ">=14"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/matthew-dean"
+  },
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "test": "RN_TARGET_PLATFORM=ios jest",
     "test:types": "tsc --noEmit",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "publish": "npx np"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
@@ -68,7 +72,8 @@
     "typescript": "^4.9.3"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "dependencies": {
     "tslib": "^2.4.1"

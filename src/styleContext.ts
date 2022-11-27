@@ -72,9 +72,8 @@ export const useStyles = (
   if (hasInheritedStyles) {
     newContext = []
   }
-  const finalStyleEntries = newStyles.concat(
-    Object.entries(inherited) as StyleEntry[]
-  )
+  const finalStyleEntries = (Object.entries(inherited) as StyleEntry[])
+    .concat(newStyles)
 
   let finalStyle = Object.fromEntries(finalStyleEntries) as unknown as AllStyles
 

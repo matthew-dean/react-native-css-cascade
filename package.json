@@ -1,6 +1,6 @@
 {
   "name": "react-native-css-cascade",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Finally, inheritable styles in React Native",
   "author": "matthew-dean",
   "license": "MIT",
@@ -12,16 +12,13 @@
   "engines": {
     "node": ">=14"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/matthew-dean"
-  },
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "test": "RN_TARGET_PLATFORM=ios jest",
     "test:types": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "publish": "npx np"
+    "release": "pnpm build && np"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
@@ -61,6 +58,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.31.11",
     "jest": "^29.3.1",
+    "np": "^7.6.2",
     "prettier": "^2.8.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
